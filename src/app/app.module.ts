@@ -11,6 +11,9 @@ import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
 import {AlertModule, BsModalService, ModalModule} from "ngx-bootstrap";
+import { HeaderComponent } from './header/header.component';
+import { ForumsComponent } from './forums/forums.component';
+import { ForumDetailComponent } from './forum-detail/forum-detail.component';
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import {AlertModule, BsModalService, ModalModule} from "ngx-bootstrap";
     MessagesComponent,
     DashboardComponent,
     RegisterComponent,
+    HeaderComponent,
+    ForumsComponent,
+    ForumDetailComponent,
 
   ],
   imports: [

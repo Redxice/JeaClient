@@ -3,7 +3,7 @@ export class User {
   name: string;
   level: number;
   hoursPlayed: number;
-  email: string
+  email: string;
   constructor(id: number, name: string, level: number, hoursPlayed: number, email: string) {
     this.id =id;
     this.name = name;

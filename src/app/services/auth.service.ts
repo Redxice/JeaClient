@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
   private url = "http://localhost:8080/JEA/api/";
 
   constructor(private http: HttpClient) {

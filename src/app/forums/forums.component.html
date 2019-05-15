@@ -1,0 +1,10 @@
+<app-header></app-header>
+<inpu
+<button (click)="createForum()" class="btn btn-primary">create forum</button>
+<ul class="forums">
+  <li  *ngFor="let forum of forums">
+    <a routerLink="/id/{{forum.title}}">
+      <span class="badge">{{forum.title}}</span>
+    </a>
+  </li>
+</ul>

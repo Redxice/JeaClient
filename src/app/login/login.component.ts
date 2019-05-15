@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginService} from "../services/login.service";
+import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
@@ -10,8 +10,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup
-  qrForm: FormGroup
+  loginForm: FormGroup;
   error = false;
   submitted = false;
   twoFactor = false;
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
   submitted2 = false;
 
   constructor(private formBuilder: FormBuilder,
-              private loginService: LoginService,
+              private loginService: AuthService,
               private router: Router) {
 
   }
@@ -43,6 +42,7 @@ export class LoginComponent implements OnInit {
     this.loginService.SendTwoFactorCode(this.form.code.value, this.form.username.value, this.form.password.value).subscribe(resp => {
       if (resp.body.name) {
         localStorage.setItem("token", resp.headers.get('Authorization'));
+        localStorage.setItem("current_user",resp.body);
         this.router.navigateByUrl('/');
       } else {
         this.errorCode = true;
@@ -58,6 +58,7 @@ export class LoginComponent implements OnInit {
     this.loginService.Login(this.form.username.value, this.form.password.value).subscribe(resp => {
         if (resp.body.name) {
           localStorage.setItem("token", resp.headers.get('Authorization'));
+          localStorage.setItem("current_user",resp.body);
           this.router.navigateByUrl('/');
         } else {
           console.log("qrCode " + resp.body.qrCode);
@@ -66,7 +67,6 @@ export class LoginComponent implements OnInit {
         }
       },
       error => {
-        console.log("in error");
         this.error = true
       })
   }
