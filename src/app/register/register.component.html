@@ -1,9 +1,12 @@
 <h2>Register</h2>
 <form [formGroup]="registerForm" (ngSubmit)="register()">
     <div class="form-group">
-      <div class="alert alert-primary" role="alert">
-      This is a primary alert—check it out!
-    </div>
+      <div *ngIf="submitted && error" class="alert alert-danger alert-dismissible"  role="alert">
+        username and/or email is already in use
+      </div>
+      <div *ngIf="submitted && error == false" class="alert alert-success alert-dismissible"  role="alert">
+        user is created
+      </div>
       <label>Username</label>
       <input type="text" formControlName="username" class="form-control"
              [ngClass]="{'is-invalid': submitted && form.username.errors}"/>
@@ -11,7 +14,7 @@
         <div *ngIf="form.username.error.required">Insert an username</div>
       </div><br/>
       <label>Password</label>
-      <input type="text" formControlName="password" class="form-control"
+      <input type="password" formControlName="password" class="form-control"
              [ngClass]="{'is-invalid': submitted && form.password.errors}"/>
       <div *ngIf="submitted && form.password.errors" class="failed">
         <div *ngIf="form.password.error.required">Insert a password</div>

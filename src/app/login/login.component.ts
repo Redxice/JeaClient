@@ -1,61 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoginService} from "../services/login.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({
   selector: 'app-login',
-  template: `
-<form [formGroup]="form">
-    <fieldset>
-        <legend>Login</legend>
-        <div class="form-field">
-            <label>username:</label>
-            <input name="username" formControlName="username">
-        </div>
-        <div class="form-field">
-            <label>Password:</label>
-            <input name="password" formControlName="password" 
-                   type="password">
-        </div>
-    </fieldset>
-    <div class="form-buttons">
-        <button class="button button-primary" 
-                (click)="Login()">Login</button>
-      <button class="button button-primary"
-              (click)="Register()">Register</button>
-    </div>
-</form>`})
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup
+  qrForm: FormGroup
+  error = false;
+  submitted = false;
+  twoFactor = false;
+  qrCode = "";
+  errorCode = false;
+  submitted2 = false;
 
-export class LoginComponent implements OnInit{
-  form:FormGroup;
+  constructor(private formBuilder: FormBuilder,
+              private loginService: LoginService,
+              private router: Router) {
 
-  constructor(private fb:FormBuilder,
-              private router: Router,
-              private loginService:LoginService) {
-    this.form = this.fb.group({
-      username: ['',Validators.required],
-      password: ['',Validators.required]
+  }
+
+  ngOnInit() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      qrCode: [''],
+      code: ['']
     });
   }
-  ngOnInit() {
+
+  get form() {
+    return this.loginForm.controls;
   }
-  Login(){
-    const val = this.form.value;
-    this.loginService.Login(val.username,val.password)
-      .subscribe(resp=>{
-        const token = resp.headers.get('Auhtorization');
-        console.log("token "+token);
-        if(token != "" ){
-          localStorage.setItem("token",token)
+
+  confirm2fa() {
+    this.submitted2 = true;
+    this.loginService.SendTwoFactorCode(this.form.code.value, this.form.username.value, this.form.password.value).subscribe(resp => {
+      if (resp.body.name) {
+        localStorage.setItem("token", resp.headers.get('Authorization'));
+        this.router.navigateByUrl('/');
+      } else {
+        this.errorCode = true;
+      }
+    })
+  }
+
+  login() {
+    this.submitted = true;
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.loginService.Login(this.form.username.value, this.form.password.value).subscribe(resp => {
+        if (resp.body.name) {
+          localStorage.setItem("token", resp.headers.get('Authorization'));
           this.router.navigateByUrl('/');
-        }else{
-          this.router.navigateByUrl('/2fa')
+        } else {
+          console.log("qrCode " + resp.body.qrCode);
+          this.twoFactor = true;
+          this.qrCode = resp.body.qrCode;
         }
+      },
+      error => {
+        console.log("in error");
+        this.error = true
       })
   }
-  Register(){
 
+  register() {
+    this.router.navigateByUrl("/register")
   }
 
 }

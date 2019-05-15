@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {User} from "../models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +11,13 @@ export class LoginService {
   constructor(private http: HttpClient) {
   }
 
-  Login(username: string, password: string):Observable<any> {
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Bearer '+username+":"+password
+  Login(username: string, password: string):Observable<HttpResponse<any>> {
+    const headers = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer '+username+":"+password})
 
-      })};
-
-    return this.http.post<any>(this.url+"authentication",{},httpOptions);
+    return this.http.post<any>(this.url+"authentication",{},{headers:headers,
+      observe:"response" as 'body'});
   }
   Register(username: string, password: string,email:string,twoFactorEnabled: boolean):Observable<any> {
     let httpOptions = {
@@ -29,6 +26,16 @@ export class LoginService {
         'Authorization': 'Bearer '+username+":"+password
       })};
 
-    return this.http.post<any>(this.url+"users",JSON.stringify({"email":email,"twoFactorEnabled":twoFactorEnabled}),httpOptions);
+    return this.http.post<any>(this.url+"users",
+      JSON.stringify({"email":email,"twoFactorEnabled":twoFactorEnabled}),httpOptions);
+  }
+
+  SendTwoFactorCode(code: string,username: string, password: string):Observable<HttpResponse<any>>  {
+    const headers = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'Bearer '+username+":"+password});
+
+    return this.http.post<any>(this.url+"authentication/2fa",code,{headers:headers,
+      observe:"response" as 'body'});
   }
 }

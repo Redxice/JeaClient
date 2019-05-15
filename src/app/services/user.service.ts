@@ -15,8 +15,8 @@ export class UserService {
     return of(USERS);
   }
   getUser(username:string):Observable<User>{
-    this.messagesService.add(`UserService: fetched user username=${username}`)
-    return of(USERS.find(user=>user.username ===username));
+    this.messagesService.add(`UserService: fetched user name=${name}`)
+    return of(USERS.find(user=>user.name === name));
   }
 
 }

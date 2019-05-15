@@ -10,6 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterComponent } from './register/register.component';
+import {AlertModule, BsModalService, ModalModule} from "ngx-bootstrap";
+
 
 @NgModule({
   declarations: [
@@ -19,14 +21,17 @@ import { RegisterComponent } from './register/register.component';
     LoginComponent,
     MessagesComponent,
     DashboardComponent,
-    RegisterComponent
+    RegisterComponent,
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AlertModule,
+    ModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]
