@@ -1,0 +1,7 @@
+<div *ngIf="user">
+  <label>name:
+    <input [(ngModel)]="user.username" placeholder="name"/>
+  </label>
+  <button (click)="goBack()">go back</button>
+</div>
+
