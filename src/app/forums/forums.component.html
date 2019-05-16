@@ -1,10 +1,31 @@
 <app-header></app-header>
-<inpu
+<form [formGroup]="forumForm">
+  <label>Title: </label>
+  <input type="text" formControlName="title" class="form-control"
+         [ngClass]="{'is-invalid': submitted && form.title.errors}"/>
+  <div *ngIf="submitted && form.title.errors" class="failed">
+    <div *ngIf="form.title.error.required">Insert a title</div>
+  </div>
+  <label>Tag</label>
+  <input type="text" formControlName="tag" class="form-control"
+         [ngClass]="{'is-invalid': submitted && form.tag.errors}"/>
+  <div *ngIf="submitted && form.tag.errors" class="failed">
+    <div *ngIf="form.tag.error.required">Insert a tag</div>
+  </div>
+</form>
 <button (click)="createForum()" class="btn btn-primary">create forum</button>
-<ul class="forums">
-  <li  *ngFor="let forum of forums">
-    <a routerLink="/id/{{forum.title}}">
-      <span class="badge">{{forum.title}}</span>
-    </a>
-  </li>
-</ul>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Title</th>
+    <th scope="col">tag</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let forum of forums">
+    <td>{{forum.title}}</td>
+    <td>{{forum.tag}}</td>
+
+  </tr>
+  </tbody>
+</table>

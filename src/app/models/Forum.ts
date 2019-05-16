@@ -1,12 +1,14 @@
 export class Forum {
-  id: number;
+  id:number;
   tag: string;
   owner_id: number;
   title: string;
-  constructor(id: number, tag: string, owner_id: number,  title: string) {
-    this.id =id;
+  constructor( tag: string, owner_id: number,  title: string) {
     this.tag = tag;
     this.owner_id = owner_id;
     this.title = title;
+  }
+  setNumber(id:number){
+    this.id = id;
   }
 }

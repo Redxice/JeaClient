@@ -3,6 +3,7 @@ import {AuthService} from "../services/auth.service";
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {User} from "../models/User";
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,7 @@ export class LoginComponent implements OnInit {
       if (resp.body.name) {
         localStorage.setItem("token", resp.headers.get('Authorization'));
         localStorage.setItem("current_user",resp.body);
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/forums');
       } else {
         this.errorCode = true;
       }
@@ -58,8 +59,8 @@ export class LoginComponent implements OnInit {
     this.loginService.Login(this.form.username.value, this.form.password.value).subscribe(resp => {
         if (resp.body.name) {
           localStorage.setItem("token", resp.headers.get('Authorization'));
-          localStorage.setItem("current_user",resp.body);
-          this.router.navigateByUrl('/');
+          localStorage.setItem("current_user", resp.body.id);
+          this.router.navigateByUrl('/forums');
         } else {
           console.log("qrCode " + resp.body.qrCode);
           this.twoFactor = true;
