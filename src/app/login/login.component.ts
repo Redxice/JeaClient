@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.loginService.SendTwoFactorCode(this.form.code.value, this.form.username.value, this.form.password.value).subscribe(resp => {
       if (resp.body.name) {
         localStorage.setItem("token", resp.headers.get('Authorization'));
-        localStorage.setItem("current_user",resp.body);
+        localStorage.setItem("current_user",JSON.stringify(resp.body));
         this.router.navigateByUrl('/forums');
       } else {
         this.errorCode = true;
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
     this.loginService.Login(this.form.username.value, this.form.password.value).subscribe(resp => {
         if (resp.body.name) {
           localStorage.setItem("token", resp.headers.get('Authorization'));
-          localStorage.setItem("current_user", resp.body.id);
+          localStorage.setItem("current_user",JSON.stringify( resp.body));
           this.router.navigateByUrl('/forums');
         } else {
           console.log("qrCode " + resp.body.qrCode);

@@ -14,6 +14,7 @@ import {AlertModule, BsModalService, ModalModule} from "ngx-bootstrap";
 import { HeaderComponent } from './header/header.component';
 import { ForumsComponent } from './forums/forums.component';
 import { ForumDetailComponent } from './forum-detail/forum-detail.component';
+import {CommonModule} from "@angular/common";
 
 
 @NgModule({

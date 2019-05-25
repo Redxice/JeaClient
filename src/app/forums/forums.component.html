@@ -22,10 +22,9 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let forum of forums">
+  <tr *ngFor="let forum of forums" (click)="goToForum(forum)">
     <td>{{forum.title}}</td>
     <td>{{forum.tag}}</td>
-
   </tr>
   </tbody>
 </table>

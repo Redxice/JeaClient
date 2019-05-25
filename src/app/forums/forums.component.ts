@@ -15,7 +15,8 @@ export class ForumsComponent implements OnInit {
   forumForm: FormGroup;
   submitted = false;
   error = false;
-  user:User;
+  user: User;
+
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private forumService: ForumService) {
@@ -25,30 +26,37 @@ export class ForumsComponent implements OnInit {
   ngOnInit() {
     this.forumForm = this.formBuilder.group({
       title: ['', Validators.required],
-      tag: ['', Validators.required]});
+      tag: ['', Validators.required]
+    });
     this.forumService.getAllForums().subscribe(forums => {
       this.forums = forums
     });
     this.forumService.connectToForums()
     this.getNewForums();
   }
+
   get form() {
     return this.forumForm.controls;
   }
-  getNewForums(){
+
+  getNewForums() {
     this.forumService.newForum.subscribe(forum => {
       this.forums.unshift(forum);
     });
   }
+
   createForum() {
     this.submitted = true;
-    const id = JSON.parse(localStorage.getItem("current_user"));
-    const forum = new Forum(this.form.tag.value,id,this.form.title.value);
-    console.log("token",localStorage.getItem("token"));
-   this.forumService.postForum(forum).subscribe(resp=>{
-     this.forums.push(resp);
-   },
-      error =>this.error=true)
+    const id = JSON.parse(localStorage.getItem("current_user")).id;
+    const forum = new Forum(this.form.tag.value, id, this.form.title.value);
+    this.forumService.postForum(forum).subscribe(resp => {
+        this.forums.push(resp);
+        this.error = false;
+      },
+      error => this.error = true)
   }
+  goToForum(forum:Forum){
+    this.router.navigateByUrl("forum/"+forum.id)
+}
 
 }
