@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Forum} from "../models/Forum";
 import {ForumService} from "../services/forum.service";
@@ -16,6 +16,7 @@ export class ForumsComponent implements OnInit {
   submitted = false;
   error = false;
   user: User;
+  filterForums: Forum[];
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -30,6 +31,7 @@ export class ForumsComponent implements OnInit {
     });
     this.forumService.getAllForums().subscribe(forums => {
       this.forums = forums
+      this.filterForums = this.forums;
     });
     this.forumService.connectToForums()
     this.getNewForums();
@@ -58,5 +60,13 @@ export class ForumsComponent implements OnInit {
   goToForum(forum:Forum){
     this.router.navigateByUrl("forum/"+forum.id)
 }
-
+  search(tag: string) {
+    if (!tag) {
+      this.filterForums = this.forums;
+    } else {
+      this.filterForums = this.forums.filter(forum =>
+        forum.tag.trim().toLowerCase().includes(tag.trim().toLowerCase())
+      );
+    }
+  }
 }

@@ -14,6 +14,13 @@
   </div>
 </form>
 <button (click)="createForum()" class="btn btn-primary">create forum</button>
+<div class="row">
+  <div class="col-md-12 mx-auto">
+    <input class="form-control"
+           placeholder="Search tag"
+           #tag (keyup)='search(tag.value)'>
+  </div>
+</div>
 <table class="table">
   <thead>
   <tr>
@@ -22,7 +29,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let forum of forums" (click)="goToForum(forum)">
+  <tr *ngFor="let forum of filterForums" (click)="goToForum(forum)">
     <td>{{forum.title}}</td>
     <td>{{forum.tag}}</td>
   </tr>

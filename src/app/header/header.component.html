@@ -9,11 +9,11 @@
       <li class="nav-item active">
         <a class="nav-link" href="forums">forums </a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="login">login </a>
-      </li>
       <li class="nav-item active" *ngIf="current_user">
         <a class="nav-link" href="profile/+{{current_user.id}}">profile </a>
+      </li>
+      <li class="nav-item active" *ngIf="current_user">
+        <a class="nav-link" (click)="logout()">logout </a>
       </li>
     </ul>
 

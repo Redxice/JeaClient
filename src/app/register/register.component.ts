@@ -43,4 +43,8 @@ export class RegisterComponent implements OnInit {
       this.succes = true;},
       error => this.error = true)
   }
+
+  back() {
+   this.router.navigateByUrl("login");
+  }
 }
