@@ -3,6 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../services/user.service";
 import { Location } from '@angular/common';
+import {Message} from "../models/Message";
+import {MessageService} from "../services/message.service";
 
 @Component({
   selector: 'app-user-detail',
@@ -11,18 +13,22 @@ import { Location } from '@angular/common';
 })
 export class UserDetailComponent implements OnInit {
   @Input() user:User;
+  messages:Message[];
   constructor( private route: ActivatedRoute,
                private userService: UserService,
-               private location: Location) { }
+               private location: Location,
+               private messageService:MessageService) { }
 
   ngOnInit(): void {
     this.getUser();
   }
-
   getUser(): void {
-    const username = this.route.snapshot.paramMap.get('username');
-    this.userService.getUser(username)
+    const id = this.route.snapshot.paramMap.get('id');
+    this.userService.getUser(id)
       .subscribe(user => this.user = user);
+    this.messageService.getUserMessage(id)
+      .subscribe(messages =>
+      this.messages = messages)
   }
   goBack():void{
     this.location.back();

@@ -13,7 +13,7 @@ import {ForumDetailComponent} from "./forum-detail/forum-detail.component";
 const routes: Routes= [
   {path:'users', component: UserComponent, canActivate: [AuthGuard] },
   {path: 'dashboard', component: DashboardComponent,canActivate: [AuthGuard] },
-  {path:'detail/:username', component: UserDetailComponent,canActivate: [AuthGuard]},
+  {path:'profile/:id', component: UserDetailComponent,canActivate: [AuthGuard]},
   // {path:'', redirectTo:'/dashboard', pathMatch:'full'},
   {path:'login', component: LoginComponent },
   {path:'', redirectTo:'/login', pathMatch:'full'},

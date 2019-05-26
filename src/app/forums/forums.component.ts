@@ -48,7 +48,7 @@ export class ForumsComponent implements OnInit {
   createForum() {
     this.submitted = true;
     const id = JSON.parse(localStorage.getItem("current_user")).id;
-    const forum = new Forum(this.form.tag.value, id, this.form.title.value);
+    const forum = new Forum(this.form.tag.value, id, this.form.title.value,[]);
     this.forumService.postForum(forum).subscribe(resp => {
         this.forums.push(resp);
         this.error = false;

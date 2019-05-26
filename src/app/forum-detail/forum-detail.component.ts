@@ -2,10 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Forum} from "../models/Forum";
 import {ActivatedRoute} from "@angular/router";
 import {ForumService} from "../services/forum.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../models/User";
 import {Message} from "../models/Message";
 import {MessageService} from "../services/message.service";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-forum-detail',
@@ -15,7 +16,9 @@ import {MessageService} from "../services/message.service";
 export class ForumDetailComponent implements OnInit {
   forumDetailForm: FormGroup;
   submitted = false;
-  forum:Forum;
+  @Input()forum:Forum;
+  content:string;
+
   constructor( private route: ActivatedRoute,
                private formBuilder: FormBuilder,
                private forumService:ForumService,
@@ -23,7 +26,7 @@ export class ForumDetailComponent implements OnInit {
 
   ngOnInit() {
     this.forumDetailForm = this.formBuilder.group({
-      message_new: ['', Validators.required],
+      messageNew: ['', Validators.required]
     });
     this.getForum();
   }
@@ -38,15 +41,29 @@ export class ForumDetailComponent implements OnInit {
   listenToMessages(){
 
   }
+  addControl(id):string{
+    this.forumDetailForm.addControl(id,this.formBuilder.control(''))
+    return id;
+  }
+
   postMessage(){
     this.submitted = true;
-    const id = JSON.parse(localStorage.getItem("current_user")).id;
-    const content = this.form.message_new.value;
-    const emptyList = [];
-    const message = new Message(id,content,this.forum.id,emptyList,"");
-    this.messageService.postMessage(message).subscribe(resp => {
+    const content = this.form.messageNew.value;
+    this.messageService.postMessage( this.createMessage(content)).subscribe(resp => {
         this.forum.messageDtos.push(resp);
       });
+  }
+  createMessage(content):any{
+    const id = JSON.parse(localStorage.getItem("current_user")).id;
+    return new Message(id,content,this.forum.id,[],"");
+  }
+  postReaction(id){
+    this.messageService.reactMessage(this.createMessage(this.forumDetailForm.get(id.toString()).value),id.toString()).subscribe(resp => {
+      this.forum.messageDtos.find(message=> message.id == resp.id).reactions = resp.reactions;
+      this.forum.messageDtos.find(message=> message.id == resp.id).username = resp.username;
+    });
+    // console.log( this.forumDetailForm.get(id).value);
+
   }
 
 }

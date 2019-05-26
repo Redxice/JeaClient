@@ -1,6 +1,7 @@
 export class Message {
   id: number;
   owner_id: number;
+  username: string;
   content: string;
   forum_id: number;
   reactions: Message[];

@@ -1,7 +1,36 @@
 <div *ngIf="user">
-  <label>name:
-    <input [(ngModel)]="user.username" placeholder="name"/>
+  <div class="card">
+  <label style="width: 100%">name:
+    <p>{{user.name}}</p>
   </label>
-  <button (click)="goBack()">go back</button>
+  <label style="width: 100%">email:
+    <p> {{user.email}}</p>
+  </label>
+  <label style="width: 100%">level:
+    <p> {{user.level}}</p>
+  </label>
+  <label style="width: 100%">hoursPlayed:
+    <p> {{user.hoursPlayed}}</p>
+  </label>
+  <label style="width: 100%">amount of posts:
+    <p> {{messages.length}}</p>
+  </label>
+  </div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Message</th>
+      <th scope="col">reaction_count</th>
+      <th scope="col">post date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let message of messages" >
+      <td>{{message.content}}</td>
+      <td>{{message.reactions.length}}</td>
+      <td>{{message.creationDate}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 

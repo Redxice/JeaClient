@@ -22,4 +22,24 @@ export class MessageService {
     return this.http.post<any>(this.url + "messages", message, httpOptions);
 
   }
+
+  reactMessage(message: any,id:string):Observable<any> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("token")
+      })
+    };
+    return this.http.post<any>(this.url + "messages/"+id, message, httpOptions);
+  }
+
+  getUserMessage(id: string) :Observable<any> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("token")
+      })
+    };
+    return this.http.get<any>(this.url + "users/"+id+"/messages", httpOptions);
+  }
 }

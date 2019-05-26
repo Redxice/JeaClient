@@ -1,23 +1,36 @@
+<app-header></app-header>
 <form [formGroup]="forumDetailForm">
+  <h1>{{forum.title}}</h1>
   <div class="form-group">
     <label>message: </label>
-    <input type="text" formControlName="message_new" class="form-control"
-           [ngClass]="{'is-invalid': submitted && form.message_new.errors}"/>
-    <div *ngIf="submitted && form.message_new.errors" class="failed">
-      <div *ngIf="form.message_new.error.required">message can't be empty</div>
-    </div>
+    <input type="text" formControlName="messageNew" class="form-control"
+           [ngClass]="{'is-invalid': submitted && form.messageNew.errors}"/>
     <button (click)="postMessage()" class="btn btn-primary">post</button>
     <div class="bs-media-container">
-      <ul *ngIf="forum">
+      <ul *ngIf="forum" class="list-group list-group-flush">
         <li *ngFor="let message of forum.messageDtos">
-          <div *ngIf="forum.messageDtos.length >0">
-            <div class="bs-media-container">
-              <p>{{message.content}}</p>
+          <div class="card" style="border-color: black;border-width: 1px">
+            <p class="card-body">
+              <input type="text" [formControlName]="addControl(message.id)"/>
+              <button (click)="postReaction(message.id)" class="btn btn-primary"
+                      style="width: 100px; align-self: center">react
+              </button>
+            </p>
+            <p class="card-text" style="align-self: center"><b>username :{{message.username}}</b></p>
+            <p class="card-text">{{message.content}}<br/>
               <span class="time-right">{{message.creationDate}}</span>
-              <!--<div  class="bs-media-container" *ngfor="let reaction of message.reactions">-->
-              <!--<p>{{reaction.content}}</p>-->
-              <!--<span class="time-right">{{reaction.creationDate}}</span>-->
-              <!--</div>-->
+            </p>
+            Reactions:
+            <div class="card" style="align-self: flex-end;width: 90%;">
+              <ul class="list-group list-group-flush">
+                <li *ngFor="let reaction of message.reactions">
+                  <div class="card" style="border-color: grey;border-width: 1px">
+                    <p class="card-text" style="align-self: center"><b>username :{{reaction.username}}</b></p>
+                    <p>{{reaction.content}}</p>
+                    <span class="time-right">{{message.creationDate}}</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </li>

@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  current_user = JSON.parse(localStorage.getItem('current_user'));
   constructor() { }
 
   ngOnInit() {
