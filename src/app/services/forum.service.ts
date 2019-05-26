@@ -43,4 +43,14 @@ export class ForumService {
   getForum(forumId: string): Observable<Forum>{
     return this.http.get<Forum>(this.url + "forums"+"/"+forumId);
   }
+
+  deleteForum(forum: Forum):Observable<any> {
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem("token")
+      })
+    };
+    return this.http.delete(this.url+"forums/"+forum.id,httpOptions);
+  }
 }

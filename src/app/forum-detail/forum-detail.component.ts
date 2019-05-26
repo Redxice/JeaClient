@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Forum} from "../models/Forum";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ForumService} from "../services/forum.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../models/User";
@@ -18,8 +18,9 @@ export class ForumDetailComponent implements OnInit {
   submitted = false;
   @Input()forum:Forum;
   content:string;
-
+  isOwner:boolean;
   constructor( private route: ActivatedRoute,
+               private router:Router,
                private formBuilder: FormBuilder,
                private forumService:ForumService,
                private messageService:MessageService) { }
@@ -36,7 +37,10 @@ export class ForumDetailComponent implements OnInit {
   getForum(){
     const forumId = this.route.snapshot.paramMap.get('id');
     this.forumService.getForum(forumId)
-      .subscribe(forum => this.forum = forum);
+      .subscribe(forum => {
+        this.forum = forum;
+      this.isOwner = this.forum.owner_id == JSON.parse(localStorage.getItem("current_user")).id;
+      })
   }
   listenToMessages(){
 
@@ -66,4 +70,9 @@ export class ForumDetailComponent implements OnInit {
 
   }
 
+  deleteForum() {
+    this.forumService.deleteForum(this.forum).subscribe(resp => {
+      this.router.navigateByUrl("forums");
+    })
+  }
 }

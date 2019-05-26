@@ -30,7 +30,7 @@ export class ForumsComponent implements OnInit {
       tag: ['', Validators.required]
     });
     this.forumService.getAllForums().subscribe(forums => {
-      this.forums = forums
+      this.forums = forums;
       this.filterForums = this.forums;
     });
     this.forumService.connectToForums()

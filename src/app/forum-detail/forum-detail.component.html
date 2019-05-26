@@ -1,5 +1,6 @@
 <app-header></app-header>
 <form [formGroup]="forumDetailForm">
+  <button class="btn btn-primary" *ngIf="isOwner==true" (click)="deleteForum()">delete forum</button>
   <h1>{{forum.title}}</h1>
   <div class="form-group">
     <label>message: </label>
